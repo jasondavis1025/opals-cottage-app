@@ -1,0 +1,70 @@
+body {
+  min-width: 1530px;
+  font-family: "Helvetica Neue","Helvetica","Arial","sans-serif";
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 30px;
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+}
+.headerItem {
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  padding: 4px 4px 4px 4px;
+  font-size: 34px;
+}
+.headersList {
+  display: flex;
+  justify-content: start;
+}
+.ReservationBTN {
+  font-size: 30px;
+  width: 200px;
+  height: 50px;
+  color: rgb(232, 230, 227);
+  background-color: rgb(79, 51, 46);
+  border-color: rgb(88, 56, 51) !important;
+
+}
+
+.overallStyling {
+  display: flex;
+  flex-direction: column;
+}
+.footer {
+  display: flex;
+  flex-direction: column;
+
+  background-color: rgb(0, 0, 0);
+  color: white;
+}
+.footerMediaList {
+  display: flex;
+}
+.footerMediaItem {
+  margin-right: 5px;
+}
+
+.bodyStyling {
+  min-height: 650px;
+}
+.room-name {
+  font-size: 20px;
+}
+.room-description {
+  font-size: 12px;
+}
+.address-info {
+  font-size: 10px;
+  margin-bottom: 0px;
+}
+.address-info-2 {
+  font-size: 10px;
+  margin-top: 0px;
+}
