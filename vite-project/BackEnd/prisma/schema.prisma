@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+//can have multiple
+generator client {
+  provider = "prisma-client-js"
+}
+
+//can only have one
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//model is a database table
+model Guest {
+  //variable name, variable type, variable role, default value
+  id          String        @id @default(uuid())
+  name        String
+  email       String
+  age         Int
+  Room        Room[]
+  Reservation Reservation[]
+
+  //block level unique status: @@unique([name, email]) 2 guests cannot have same Name AND Email. to use it in ts file you could use name_email {name: , email: }
+
+  //in case we'd like to query based on email:
+  @@index([age])
+}
+
+model Employee {
+  EmployeeId String  @id @default(uuid())
+  name       String
+  email      String  @unique
+  // isAdmin    Boolean
+  role       Role    @default(BASIC)
+  isManager  Boolean
+}
+
+model Room {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String
+  beds        Int
+  isAvailable Boolean
+  reservedBy  Guest         @relation(fields: [guestId], references: [id])
+  guestId     String
+  Reservation Reservation[]
+}
+
+model Reservation {
+  id           String   @id @default(uuid())
+  createdAt    DateTime @default(now())
+  updatedLast  DateTime @updatedAt
+  reservedBy   Guest    @relation(fields: [guestId], references: [id])
+  guestId      String
+  RoomReserved Room     @relation(fields: [roomId], references: [id])
+  roomId       Int
+}
+
+enum Role {
+  BASIC
+  MANAGER
+  ADMIN
+  OWNER
+}
+
+//migrate prisma code to db with npx prisma migrate dev --name init
+//npm i @prisma/client
+//npx prisma generate will generate a prisma client
+// standard importing template:
+//import { PrismaClient } from '@prisma/client'
+// const prisma = new PrismaClient()
+
+//make query to database
+//have an api that returns that data
+//show on frontend

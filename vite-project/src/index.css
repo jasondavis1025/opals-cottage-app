@@ -30,7 +30,7 @@ body {
   color: rgb(232, 230, 227);
   background-color: rgb(79, 51, 46);
   border-color: rgb(88, 56, 51) !important;
-
+  cursor: pointer;
 }
 
 .overallStyling {
@@ -49,6 +49,7 @@ body {
 }
 .footerMediaItem {
   margin-right: 5px;
+  cursor: pointer;
 }
 
 .bodyStyling {
