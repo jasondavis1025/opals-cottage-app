@@ -9,9 +9,9 @@ const Body = () => {
 
   return (
     <div className="bodyStyling">
-      <RoomList />
       {/* {reservation && <MakeReservation />} */}
       <DropdownCalendar />
+      <RoomList />
     </div>
   );
 };

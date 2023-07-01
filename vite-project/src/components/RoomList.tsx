@@ -20,8 +20,8 @@ const RoomList = () => {
       const data = await result.json();
 
       setRooms(data);
-      console.log(data);
-      console.log(rooms);
+      // console.log(data);
+      // console.log(rooms);
     };
     roomFetch();
   }, []);
@@ -30,7 +30,7 @@ const RoomList = () => {
     <div>
       {rooms &&
         rooms.map((room) => (
-          <div>
+          <div key={room.id}>
             <h1 className="room-name">{room.name}</h1>
             <p className="room-description">{room.description}</p>
           </div>
