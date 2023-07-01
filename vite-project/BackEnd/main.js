@@ -16,8 +16,8 @@ app.get("/", (req, res) => {
 });
 
 // HTTP GET http://localhost:3001/rooms
-app.get("/rooms", (req, res) => {
-  const rooms = prisma.room.findMany();
+app.get("/rooms", async (req, res) => {
+  const rooms = await prisma.room.findMany();
   res.json(rooms);
 });
 

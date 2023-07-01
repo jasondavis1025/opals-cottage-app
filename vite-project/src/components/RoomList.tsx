@@ -28,12 +28,13 @@ const RoomList = () => {
 
   return (
     <div>
-      {/* {rooms.map((room) => (
-        <div>
-          <h1 className="room-name">{room.name}</h1>
-          <p className="room-description">{room.description}</p>
-        </div>
-      ))} */}
+      {rooms &&
+        rooms.map((room) => (
+          <div>
+            <h1 className="room-name">{room.name}</h1>
+            <p className="room-description">{room.description}</p>
+          </div>
+        ))}
     </div>
   );
 };

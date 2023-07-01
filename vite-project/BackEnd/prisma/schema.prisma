@@ -19,7 +19,6 @@ model Guest {
   name        String
   email       String
   age         Int
-  Room        Room[]
   Reservation Reservation[]
 
   //block level unique status: @@unique([name, email]) 2 guests cannot have same Name AND Email. to use it in ts file you could use name_email {name: , email: }
@@ -43,8 +42,6 @@ model Room {
   description String
   beds        Int
   isAvailable Boolean
-  reservedBy  Guest         @relation(fields: [guestId], references: [id])
-  guestId     String
   Reservation Reservation[]
 }
 
