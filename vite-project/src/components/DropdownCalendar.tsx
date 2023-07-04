@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 const DropdownCalendar = () => {
-  const [date, setDate] = useState("Check-in Date - Check-out Date");
+  const [date, setDate] = useState(" to ");
 
   //current date information for re-use in calendar
   let now = new Date();
@@ -122,36 +122,25 @@ const DropdownCalendar = () => {
     let dayInp = +event.target.innerText;
     let monthInp: any = document.getElementById("months").value;
     let yearInp = document.getElementById("years").value;
-    let value = `${String(dayInp).length < 2 ? "0" + dayInp : dayInp}-${
-      monthsNumbers[monthInp]
+    let value = `${monthsNumbers[monthInp]}-${
+      String(dayInp).length < 2 ? "0" + dayInp : String(dayInp)
     }-${yearInp}`;
-
-    event.target.classList.add("selected-Highlight");
-    // console.log(dayInp);
-    // console.log(+event.target.id);
-    // console.log(dayInp == +event.target.id);
-    // console.log(event.target);
-    // console.log(event.target.classList);
-    // event.target.classList.add()
-    // console.log(event.target.classList);
-
-    // setSelectedElement((selected) =>
-    //   dayInp == event.target.id ? !selected : selected
-    // );
+    // console.log(dayInp, monthInp, yearInp);
+    // console.log(value);
+    // event.target.classList.add("selected-Highlight");
 
     setDate((date): string => {
-      if (date == " to " && Date.parse(value) > todaysDate) {
-        // if (+date.slice(0, 2) == event.target.id) {
-        //   console.log("yes");
-        // }
+      if (date == " to ") {
         return (date = value + " to ");
       }
       if (
         date.length == (value + " to ").length &&
         Date.parse(value) > Date.parse(date.slice(0, date.length - 3))
       ) {
+        console.log(2);
         return (date = date + value);
       } else {
+        console.log(3);
         return (date = value + " to ");
       }
       // if (date.length == (value + " to " + value).length) {
@@ -160,8 +149,39 @@ const DropdownCalendar = () => {
       // return date;
     });
   };
+  // const [hightlight, setHighlight] = useState([]);
+  // const dayHighlightingHandler = (event) => {
+  //   setHighlight[]
 
-  //JSX below:
+  // };
+  useEffect(() => {
+    let firstId: any = +date.slice(3, 5);
+    let SecondId: any = +date.slice(17, 19);
+    console.log(firstId, SecondId);
+    if (typeof firstId == "number") {
+      for (let i = 1; i < 32; i++) {
+        document
+          .getElementById("day" + i)
+          .classList.remove("selected-Highlight");
+      }
+    }
+    if (date != " to ") {
+      if (typeof firstId == "number" && typeof SecondId == "number") {
+        for (let i = firstId; i < SecondId + 1; i++) {
+          document
+            .getElementById("day" + i)
+            .classList.add("selected-Highlight");
+        }
+      }
+    }
+    if (date != " to ") {
+      let singleSelect = document.getElementById("day" + firstId);
+      // console.log(document.getElementById("day" + firstId));
+      if (singleSelect.classList) {
+        singleSelect.classList.add("selected-Highlight");
+      }
+    }
+  }, [date]);
   return (
     <div className="make-Reservation">
       MakeReservation
