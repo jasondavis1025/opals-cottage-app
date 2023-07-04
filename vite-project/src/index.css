@@ -1,7 +1,7 @@
 body {
   min-width: 1530px;
   font-family: "Helvetica Neue", "Helvetica", "Arial", "sans-serif";
-  background-color: gray;
+  background-color: rgb(129, 184, 209);
 }
 .header {
   display: flex;
@@ -75,8 +75,10 @@ body {
 }
 
 .calendar-display {
-  width: 244px;
+  width: 300px;
   text-align: center;
+  font-size: 20px;
+  font-weight: bold;
 }
 .btn-date-submit {
   width: 225px;
@@ -144,4 +146,9 @@ body {
 }
 .disabledDay {
   opacity: 0.5;
+}
+.selected-Highlight {
+  border: 1px solid;
+  border-color: blue;
+  background-color: lightblue;
 }

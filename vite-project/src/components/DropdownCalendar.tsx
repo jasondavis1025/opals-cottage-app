@@ -1,46 +1,14 @@
 import { useState } from "react";
 
 const DropdownCalendar = () => {
-  //adding in from MakeReservation
-  const [date, setDate] = useState(" to ");
-  //   const [minDate, setMinDate] = useState("");
-  //   const [maxDate, setMaxDate] = useState("");
+  const [date, setDate] = useState("Check-in Date - Check-out Date");
 
-  const roomsAvailable = () => {
-    console.log("list of rooms");
-  };
-
-  type dateObjectType = {
-    year: string;
-    month: string;
-    day: string;
-  };
-  const dateFormat: dateObjectType = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  };
-  const calendarHandler = (e: any) => {
-    let display = document.getElementById("dateDisplay").value || {};
-
-    setMaxDate((date) => {
-      if (display != " to ") {
-        date = new Date(e.target.value).toLocaleDateString("en-us", dateFormat);
-      }
-      return date;
-    });
-    setMinDate((date) => {
-      if (display == " to ") {
-        date = new Date(e.target.value).toLocaleDateString("en-us", dateFormat);
-      }
-      return date;
-    });
-  };
-  //current
+  //current date information for re-use in calendar
   let now = new Date();
   let theYear = now.getFullYear();
   let theMonth = now.getMonth();
   let theMonthName = now.toLocaleString("default", { month: "long" });
+
   const daysOfThisMonth = () => {
     let daysArray = [];
     let daysInThisMonth = new Date(theYear, theMonth + 1, 0).getDate();
@@ -53,15 +21,17 @@ const DropdownCalendar = () => {
   const [day, setDay] = useState(daysOfCurrentMonth);
   const [calendarView, setCalendarView] = useState(false);
 
-  //   const [date, setDate] = useState();
-  const years: any[] = [];
+  //   initializing years default state with function. considering converting years to regular variable since setState not needed.
+  const yearsArray: any[] = [];
   const yearsSelection = () => {
     let currentYear = new Date().getFullYear();
     for (let i = 0; i < 5; i++) {
-      years.push(currentYear + i);
+      yearsArray.push(currentYear + i);
     }
   };
   yearsSelection();
+  const [years, setYears] = useState(yearsArray);
+
   const year = {
     January: 31,
     February: 28,
@@ -90,10 +60,16 @@ const DropdownCalendar = () => {
     November: "11",
     December: "12",
   };
-  const months = Object.keys(year);
-  console.log(months);
-  const initMonthsArray = months[theMonth];
-  console.log(initMonthsArray);
+  const monthsOfYear = Object.keys(year);
+  const initMonthsArray = monthsOfYear.slice(theMonth, monthsOfYear.length);
+  const [months, setMonths] = useState(initMonthsArray);
+  const [currentYearSelected, setCurrentYearSelected] = useState(true);
+
+  //handler functions and regular other functions below:
+
+  const roomsAvailable = () => {
+    console.log("list of rooms");
+  };
 
   const dateArray = [];
   const calendarFunc = () => {
@@ -103,7 +79,7 @@ const DropdownCalendar = () => {
   };
   calendarFunc();
 
-  let days = [];
+  let days: any[] = [];
   const dayHandler = () => {
     let currentYear = document.getElementById("years").value;
     currentYear = +currentYear;
@@ -116,89 +92,87 @@ const DropdownCalendar = () => {
       days.push(i);
     }
     setDay(days);
+    setMonths((months) => {
+      if (currentYear == new Date().getFullYear()) {
+        return (months = initMonthsArray);
+      } else {
+        return (months = monthsOfYear);
+      }
+    });
+    setCurrentYearSelected((cySelected): boolean => {
+      if (currentYear == theYear) {
+        return (cySelected = true);
+      } else {
+        return (cySelected = false);
+      }
+    });
   };
+
   const calendarRevealHandler = () => {
     setCalendarView((current) => (current = !current));
   };
   let todaysDate: any = new Date();
   let todaysDay: any = new Date().getDate();
-  let minDateValue: any = "";
-  let maxDateValue: string = "";
+  // let startDate;
+  // let endDate;
+  // const [selectedElement, setSelectedElement] = useState(false);
 
   const daySendHandler = (event: any) => {
-    console.log(event.target.id);
-    let dateInp = document.getElementById("dateSelection");
-    let dayInp = +event.target.id;
-    let monthInp = document.getElementById("months").value;
+    // event.target.className += "selected-Highlight";
+    let dayInp = +event.target.innerText;
+    let monthInp: any = document.getElementById("months").value;
     let yearInp = document.getElementById("years").value;
-    let value = `${yearInp}-${monthsNumbers[monthInp]}-${
-      String(dayInp).length < 2 ? "0" + dayInp : dayInp
-    }`;
-    // calendarHandler(`${yearInp}-${monthsNumbers[monthInp]}-${dayInp}`);
-    // let display = document.getElementById("dateDisplay").value || {};
-    // setMaxDate((date) => {
-    //   if (Date.parse(value) > Date.parse(minDateValue)) {
-    //     date = new Date(value).toLocaleDateString("en-us", dateFormat);
-    //     maxDateValue = date;
-    //     console.log("max date is " + maxDateValue);
-    //   }
-    //   return date;
-    //     if (minDate != "") {
-    //         date = value;
-    //     }
-    //     if (date != "") {
+    let value = `${String(dayInp).length < 2 ? "0" + dayInp : dayInp}-${
+      monthsNumbers[monthInp]
+    }-${yearInp}`;
 
-    //     }
-    // });
-    // setMinDate((date) => {
-    //   if (
-    //     minDateValue == new Date() ||
-    //     Date.parse(value) < Date.parse(minDateValue)
-    //   ) {
-    //     date = new Date(value).toLocaleDateString("en-us", dateFormat);
-    //     minDateValue = date;
-    //     console.log("min date is " + minDateValue);
-    //   }
-    //   return date;
-    //   if (minDate == "") {
-    //     date = value;
-    //   }
-    // });
-    console.log(Date.parse(value) > todaysDate);
+    event.target.classList.add("selected-Highlight");
+    // console.log(dayInp);
+    // console.log(+event.target.id);
+    // console.log(dayInp == +event.target.id);
+    // console.log(event.target);
+    // console.log(event.target.classList);
+    // event.target.classList.add()
+    // console.log(event.target.classList);
+
+    // setSelectedElement((selected) =>
+    //   dayInp == event.target.id ? !selected : selected
+    // );
+
     setDate((date): string => {
       if (date == " to " && Date.parse(value) > todaysDate) {
+        // if (+date.slice(0, 2) == event.target.id) {
+        //   console.log("yes");
+        // }
         return (date = value + " to ");
       }
-      if (date.length == (value + " to ").length) {
+      if (
+        date.length == (value + " to ").length &&
+        Date.parse(value) > Date.parse(date.slice(0, date.length - 3))
+      ) {
         return (date = date + value);
-      }
-      if (date.length == (value + " to " + value).length) {
+      } else {
         return (date = value + " to ");
       }
-      return date;
+      // if (date.length == (value + " to " + value).length) {
+      //   return (date = value + " to ");
+      // }
+      // return date;
     });
   };
-  const dayTester = (event) => {
-    // console.log(event.target);
-    let dayInp = +event.target.id;
-    let monthInp = document.getElementById("months").value;
-    let yearInp = document.getElementById("years").value;
-    if (Date(monthInp + "-" + dayInp + "-" + yearInp) > todaysDate) {
-      return true;
-    }
-    return false;
-  };
+
+  //JSX below:
   return (
     <div className="make-Reservation">
       MakeReservation
       <div>
+        <i className="fa fa-calendar" aria-hidden="true"></i>
         <div onClick={calendarRevealHandler}>
           <input
             id="dateDisplay"
             type="text"
             className="calendar-display"
             value={date}
-            //new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})
             disabled
           />
         </div>
@@ -228,24 +202,37 @@ const DropdownCalendar = () => {
               onChange={dayHandler}
               autoComplete="off"
             >
-              {months.map(
-                (month) =>
-                  theMonthName == month ? (
-                    <option value={month} selected>
-                      {month}
-                    </option>
-                  ) : (
-                    <option value={month}>{month}</option>
-                  )
-                // (<option value={month}>{month}</option>)
+              {months.map((month) =>
+                theMonthName == month ? (
+                  <option value={month} selected>
+                    {month}
+                  </option>
+                ) : (
+                  <option value={month}>{month}</option>
+                )
               )}
             </select>
             <div className="days-organization">
               {day.map((dy) => (
                 <span
-                  className={`day ${dy <= todaysDay ? "disabledDay" : ""}`}
-                  id={String(dy)}
-                  onClick={daySendHandler}
+                  className={
+                    `day ${
+                      dy < todaysDay && currentYearSelected
+                        ? "disabledDay "
+                        : " "
+                    }`
+                    //  {
+                    //   dy >= todaysDay && currentYearSelected && selectedElement && date
+                    //     ? "selected-Highlight"
+                    //     : ""
+                    // }
+                  }
+                  id={"day" + String(dy)}
+                  onClick={
+                    dy < todaysDay && currentYearSelected
+                      ? undefined
+                      : daySendHandler
+                  }
                 >
                   {dy}
                 </span>
@@ -254,19 +241,8 @@ const DropdownCalendar = () => {
           </div>
         </div>
       </div>
-      {/* <div className="dropdown" onClick={calendarRevealHandler}>
-        <input
-          id="dateSelection"
-          className=""
-          type="date"
-          min={new Date()}
-          pattern="mm-dd-yyyy"
-          onChange={calendarHandler}
-          disabled
-        />
-      </div> */}
       <button className="btn-date-submit" onClick={roomsAvailable}>
-        Submit
+        Search
       </button>
     </div>
   );
