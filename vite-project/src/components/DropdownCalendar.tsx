@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-const DropdownCalendar = () => {
+const DropdownCalendar = (props) => {
   const [date, setDate] = useState(" to ");
 
   //current date information for re-use in calendar
@@ -67,10 +67,6 @@ const DropdownCalendar = () => {
 
   //handler functions and regular other functions below:
 
-  const roomsAvailable = () => {
-    console.log("list of rooms");
-  };
-
   const dateArray = [];
   const calendarFunc = () => {
     for (let i = 1; i < dateArray.length + 1; i++) {
@@ -113,21 +109,14 @@ const DropdownCalendar = () => {
   };
   let todaysDate: any = new Date();
   let todaysDay: any = new Date().getDate();
-  // let startDate;
-  // let endDate;
-  // const [selectedElement, setSelectedElement] = useState(false);
 
   const daySendHandler = (event: any) => {
-    // event.target.className += "selected-Highlight";
     let dayInp = +event.target.innerText;
     let monthInp: any = document.getElementById("months").value;
     let yearInp = document.getElementById("years").value;
     let value = `${monthsNumbers[monthInp]}-${
       String(dayInp).length < 2 ? "0" + dayInp : String(dayInp)
     }-${yearInp}`;
-    // console.log(dayInp, monthInp, yearInp);
-    // console.log(value);
-    // event.target.classList.add("selected-Highlight");
 
     setDate((date): string => {
       if (date == " to ") {
@@ -137,54 +126,73 @@ const DropdownCalendar = () => {
         date.length == (value + " to ").length &&
         Date.parse(value) > Date.parse(date.slice(0, date.length - 3))
       ) {
-        console.log(2);
         return (date = date + value);
       } else {
-        console.log(3);
         return (date = value + " to ");
       }
-      // if (date.length == (value + " to " + value).length) {
-      //   return (date = value + " to ");
-      // }
-      // return date;
     });
   };
-  // const [hightlight, setHighlight] = useState([]);
-  // const dayHighlightingHandler = (event) => {
-  //   setHighlight[]
 
-  // };
   useEffect(() => {
     let firstId: any = +date.slice(3, 5);
     let SecondId: any = +date.slice(17, 19);
     console.log(firstId, SecondId);
-    if (typeof firstId == "number") {
-      for (let i = 1; i < 32; i++) {
-        document
-          .getElementById("day" + i)
-          .classList.remove("selected-Highlight");
+
+    if (date != " to ") {
+      if (typeof firstId == "number") {
+        for (let i = 1; i < day.length + 1; i++) {
+          if (
+            document
+              .getElementById("day" + i)
+              .classList.contains("selected-Highlight")
+          ) {
+            document
+              .getElementById("day" + i)
+              .classList.remove("selected-Highlight");
+          }
+          if (
+            document
+              .getElementById("day" + i)
+              .classList.contains("selected-Highlight-edge")
+          ) {
+            document
+              .getElementById("day" + i)
+              .classList.remove("selected-Highlight-edge");
+          }
+        }
       }
     }
     if (date != " to ") {
       if (typeof firstId == "number" && typeof SecondId == "number") {
         for (let i = firstId; i < SecondId + 1; i++) {
-          document
-            .getElementById("day" + i)
-            .classList.add("selected-Highlight");
+          if (i == firstId) {
+            document
+              .getElementById("day" + i)
+              .classList.add("selected-Highlight-edge");
+          }
+          if (i == SecondId) {
+            document
+              .getElementById("day" + i)
+              .classList.add("selected-Highlight-edge");
+          } else {
+            document
+              .getElementById("day" + i)
+              .classList.add("selected-Highlight");
+          }
         }
       }
     }
     if (date != " to ") {
       let singleSelect = document.getElementById("day" + firstId);
-      // console.log(document.getElementById("day" + firstId));
       if (singleSelect.classList) {
-        singleSelect.classList.add("selected-Highlight");
+        singleSelect.classList.add("selected-Highlight-edge");
       }
     }
-  }, [date]);
+  }, [date, day, calendarView, months]);
   return (
     <div className="make-Reservation">
-      MakeReservation
+      <h2 className="make-Reservation-font">Make Reservation:</h2>
+
       <div>
         <i className="fa fa-calendar" aria-hidden="true"></i>
         <div onClick={calendarRevealHandler}>
@@ -200,46 +208,51 @@ const DropdownCalendar = () => {
           className={`${calendarView ? "reveal " : ""}` + `dropdown-content`}
         >
           <div className="dropdown-calendar">
-            <select
-              id="years"
-              name="years"
-              onChange={dayHandler}
-              autoComplete="off"
-            >
-              {years.map((year) =>
-                year == theYear ? (
-                  <option value={year} selected>
-                    {year}
-                  </option>
-                ) : (
-                  <option value={year}>{year}</option>
-                )
-              )}
-            </select>
-            <select
-              id="months"
-              name="months"
-              onChange={dayHandler}
-              autoComplete="off"
-            >
-              {months.map((month) =>
-                theMonthName == month ? (
-                  <option value={month} selected>
-                    {month}
-                  </option>
-                ) : (
-                  <option value={month}>{month}</option>
-                )
-              )}
-            </select>
+            <div className="month-year-org">
+              <select
+                id="years"
+                name="years"
+                onChange={dayHandler}
+                autoComplete="off"
+                className="calendar-headers"
+              >
+                {years.map((year) =>
+                  year == theYear ? (
+                    <option value={year} selected>
+                      {year}
+                    </option>
+                  ) : (
+                    <option value={year}>{year}</option>
+                  )
+                )}
+              </select>
+              <select
+                id="months"
+                name="months"
+                onChange={dayHandler}
+                autoComplete="off"
+                className="calendar-headers"
+              >
+                {months.map((month) =>
+                  theMonthName == month ? (
+                    <option value={month} selected>
+                      {month}
+                    </option>
+                  ) : (
+                    <option value={month}>{month}</option>
+                  )
+                )}
+              </select>
+            </div>
+
             <div className="days-organization">
               {day.map((dy) => (
                 <span
                   className={
-                    `day ${
+                    `day${
                       dy < todaysDay && currentYearSelected
-                        ? "disabledDay "
-                        : " "
+                        ? " disabledDay"
+                        : ""
                     }`
                     //  {
                     //   dy >= todaysDay && currentYearSelected && selectedElement && date
@@ -261,7 +274,7 @@ const DropdownCalendar = () => {
           </div>
         </div>
       </div>
-      <button className="btn-date-submit" onClick={roomsAvailable}>
+      <button className="btn-date-submit" onClick={props.onClick}>
         Search
       </button>
     </div>

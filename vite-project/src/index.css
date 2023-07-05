@@ -88,8 +88,14 @@ body {
 .make-Reservation {
   display: flex;
   flex-direction: row;
-  width: 650px;
-  height: 180px;
+  width: fit-content;
+  min-height: 265px;
+  height: fit-content;
+}
+.make-Reservation-font {
+  font-family: Courier New, monospace;
+  font-weight: normal;
+  margin: 0px 10px 0px 0px;
 }
 .dropbtn {
   background-color: #04aa6d;
@@ -108,6 +114,7 @@ body {
   display: none;
   background-color: #f1f1f1;
   min-width: 160px;
+  width: 308px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
@@ -122,23 +129,20 @@ body {
 
 .day {
   display: flex;
-  border: 1px solid;
   width: 20px;
   height: 20px;
-  padding: 1px;
+  padding: 4px;
   justify-content: center;
   align-items: center;
-  margin: 1px;
+  margin: 8px;
 }
 .days-organization {
   display: flex;
   flex-wrap: wrap;
-  width: 200px;
-  border: 1px solid;
+  width: fit-content;
 }
 .dropdown-calendar {
-  border: 1px solid;
-  width: 250px;
+  width: fit-content;
 }
 
 .reveal {
@@ -148,7 +152,24 @@ body {
   opacity: 0.5;
 }
 .selected-Highlight {
-  border: 1px solid;
   border-color: blue;
   background-color: lightblue;
+}
+.selected-Highlight-edge {
+  background: cornflowerblue;
+}
+.center-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.month-year-org {
+  height: 30px;
+  display: flex;
+  justify-content: flex-end;
+}
+.calendar-headers {
+  font-size: 20px;
+  background-color: lightslategray;
 }

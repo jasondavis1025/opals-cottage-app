@@ -27,14 +27,14 @@ const RoomList = () => {
   }, []);
 
   return (
-    <div>
-      {rooms &&
-        rooms.map((room) => (
-          <div key={room.id}>
-            <h1 className="room-name">{room.name}</h1>
-            <p className="room-description">{room.description}</p>
-          </div>
-        ))}
+    <div className="center-flex">
+      <h1>Available Rooms</h1>
+      {rooms.map((room) => (
+        <div key={room.id}>
+          <h1 className="room-name">{room.name}</h1>
+          <p className="room-description">{room.description}</p>
+        </div>
+      ))}
     </div>
   );
 };

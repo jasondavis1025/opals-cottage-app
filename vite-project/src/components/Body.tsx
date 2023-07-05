@@ -1,17 +1,23 @@
-// import { useState } from "react";
+import { useState } from "react";
 
-// import MakeReservation from "./MakeReservation";
 import RoomList from "./RoomList";
 import DropdownCalendar from "./DropdownCalendar";
 
 const Body = () => {
-  // const [reservation, setReservation] = useState(true);
+  const [reservation, setReservation] = useState(false);
 
+  const clickHandler = () => {
+    console.log("show rooms!");
+    setReservation((rooms): any => {
+      // if (dateSelected) {}
+      return !rooms;
+    });
+  };
   return (
     <div className="bodyStyling">
       {/* {reservation && <MakeReservation />} */}
-      <DropdownCalendar />
-      <RoomList />
+      <DropdownCalendar onClick={clickHandler} />
+      {reservation && <RoomList />}
     </div>
   );
 };
